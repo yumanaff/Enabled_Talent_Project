@@ -1,0 +1,451 @@
+/* Setup page styles. Same soft palette as the popup. */
+@font-face {
+  font-family: "Ease Atkinson";
+  src: url("../fonts/atkinson-400.woff2");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Ease Atkinson";
+  src: url("../fonts/atkinson-700.woff2");
+  font-weight: 700;
+}
+@font-face {
+  font-family: "Ease OpenDyslexic";
+  src: url("../fonts/opendyslexic-400.woff");
+  font-weight: 400;
+}
+
+:root {
+  --ground: #F1F1EC;
+  --surface: #FBFBF9;
+  --line: #DDDDD6;
+  --text: #2A2F36;
+  --muted: #555B66;
+  --accent: #4A5A8C;
+  --accent-dark: #34406A;
+  --accent-tint: #E8EAF1;
+  --warm-tint: #FBEDE5;
+  --warm-text: #6B2E10;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ground);
+  color: var(--text);
+  font-family: "Ease Atkinson", system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+button,
+select {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.app {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 32px 20px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ---------- Top bar: progress + language ---------- */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.progress {
+  display: flex;
+  gap: 6px;
+}
+
+.progress span {
+  width: 36px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--line);
+}
+
+.progress span.done {
+  background: var(--accent);
+}
+
+.lang {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.lang select {
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  padding: 0 10px;
+  font-size: 15px;
+}
+
+/* ---------- Text ---------- */
+
+h1 {
+  margin: 8px 0 0;
+  font-size: 32px;
+  line-height: 1.2;
+}
+
+h2,
+h1.step-title {
+  margin: 0;
+  font-size: 26px;
+  line-height: 1.25;
+}
+
+.lead {
+  margin: 0;
+  color: var(--muted);
+}
+
+.logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: var(--accent);
+  color: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.privacy {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: var(--accent-tint);
+  color: var(--accent-dark);
+}
+
+/* ---------- Buttons ---------- */
+
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.primary,
+.secondary {
+  min-height: 52px;
+  padding: 0 22px;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.primary {
+  flex: 2;
+  border: none;
+  background: var(--accent);
+  color: var(--surface);
+}
+
+.primary:disabled {
+  background: #A9AEB8;
+  cursor: not-allowed;
+}
+
+.secondary {
+  flex: 1;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* ---------- Choice cards (needs and quiz answers) ---------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 10px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.choice {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  min-height: 60px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  text-align: start;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.choice:hover {
+  border-color: var(--accent);
+}
+
+.choice[aria-pressed="true"] {
+  border: 2px solid var(--accent);
+  background: var(--accent-tint);
+}
+
+.choice-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.sample {
+  display: block;
+  font-weight: 400;
+}
+
+/* ---------- Quiz pictures ---------- */
+
+.picture {
+  padding: 16px;
+  border-radius: 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 18px;
+  height: 120px;
+  padding: 0 20px;
+}
+
+.bar {
+  width: 70px;
+  border-radius: 6px 6px 0 0;
+}
+
+.shop {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.shop-badge {
+  align-self: flex-start;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #B4351E;
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+.busy {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.busy span {
+  height: 50px;
+  border-radius: 8px;
+  background: #DCDFE6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: var(--accent-dark);
+}
+
+.picture-note {
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.cursor-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ---------- Preview ---------- */
+
+.compare {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.compare-box {
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.compare-title {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.check {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.check input {
+  width: 24px;
+  height: 24px;
+  margin: 2px 0 0;
+  flex-shrink: 0;
+}
+
+.check-help {
+  display: block;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* ---------- Caregivers: set up for someone else, load a setup file ---------- */
+
+.other-ways {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-top: 20px;
+}
+
+.text-button {
+  border: none;
+  background: none;
+  padding: 6px 0;
+  color: var(--accent-dark);
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-button:focus-visible,
+.file-label:focus-within {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.file-label input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.for-other {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 2px solid var(--accent);
+  background: var(--accent-tint);
+  font-weight: 700;
+}
+
+.other-box {
+  margin: 16px 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.field select,
+.field input {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+
+.field input {
+  width: 110px;
+  letter-spacing: 0.4em;
+  text-align: center;
+}
+
+.message {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--accent-tint);
+  font-weight: 700;
+}
+
+.message.error {
+  background: var(--warm-tint);
+  color: var(--warm-text);
+}
+
+.steps-list {
+  margin: 0 0 20px;
+  padding-inline-start: 24px;
+  line-height: 1.6;
+}
+
+.steps-list li {
+  margin-bottom: 8px;
+}
