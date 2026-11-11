@@ -1,0 +1,11 @@
+<!doctype html>
+<!-- A hidden helper page. The user never sees it.
+     1. Sound limiter: plays a tab's sound through the limiter (sound.js).
+     2. AI helpers: runs Chrome's on-device AI for "Explain simply" and "Show me how" (ai-host.js).
+     Chrome allows only one hidden page per extension, so both live here. -->
+<meta charset="utf-8">
+<title>Accessibility extension helper</title>
+<script src="../shared/i18n.js"></script>
+<script src="../shared/ai.js"></script>
+<script src="sound.js"></script>
+<script src="ai-host.js"></script>

@@ -1,0 +1,12 @@
+{
+  "name": "ease-accessibility-tests",
+  "private": true,
+  "description": "Checks every Ease screen with axe-core (WCAG 2.2 AA + best practices) in Chromium.",
+  "scripts": {
+    "audit": "node audit.js"
+  },
+  "devDependencies": {
+    "axe-core": "4.10.3",
+    "playwright": "1.56.0"
+  }
+}

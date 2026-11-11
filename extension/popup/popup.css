@@ -1,0 +1,1517 @@
+/* Popup styles. Soft palette: no pure white, no pure black. */
+:root {
+  --ground: #F1F1EC;
+  --surface: #FBFBF9;
+  --line: #DDDDD6;
+  --line-soft: #E9E9E3;
+  --text: #2A2F36;
+  --muted: #555B66;
+  --accent: #4A5A8C;
+  --accent-dark: #34406A;
+  --accent-tint: #E8EAF1;
+  --switch-off: #A9AEB8;
+  --warm-tint: #FBEDE5;
+  --warm-text: #6B2E10;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  width: 360px;
+  height: 600px; /* the largest popup Chrome allows */
+  display: flex;
+  flex-direction: column;
+  background: var(--ground);
+  color: var(--text);
+  font-family: "Atkinson Hyperlegible Next", system-ui, sans-serif;
+  font-size: 15px;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Header ---------- */
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+.logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.header-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.app-name {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.1;
+}
+
+.link-button {
+  border: none;
+  background: none;
+  padding: 2px 0;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: start;
+}
+
+.lang-select {
+  height: 36px;
+  max-width: 110px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  padding: 0 8px;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+/* ---------- Daily check-in ---------- */
+
+.checkin {
+  flex: 1;
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.checkin-title {
+  margin: 0;
+  font-size: 22px;
+}
+
+.checkin-sub {
+  margin: 0 0 6px;
+  color: var(--muted);
+}
+
+.mood {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-height: 64px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  text-align: start;
+}
+
+.mood:hover {
+  border-color: var(--accent);
+}
+
+.mood-name {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.mood-desc {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ---------- Main and tabs ---------- */
+
+.main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 14px;
+}
+
+.tab-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+}
+
+.tab {
+  min-height: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: none;
+  border-top: 3px solid transparent;
+  background: none;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.tab[aria-current="page"] {
+  color: var(--accent);
+  border-top-color: var(--accent);
+  font-weight: 700;
+}
+
+/* ---------- Big toggles (Calm, Low-energy) ---------- */
+
+.big-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  text-align: start;
+}
+
+.big-toggle[aria-pressed="true"] {
+  border: 2px solid var(--accent);
+  background: var(--accent-tint);
+}
+
+.big-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.big-title {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.big-status {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.big-toggle[aria-pressed="true"] .big-status {
+  color: var(--accent-dark);
+}
+
+/* ---------- Search ---------- */
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 46px;
+  padding: 0 12px;
+  border-radius: 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.search input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 15px;
+}
+
+.empty {
+  padding: 14px 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* ---------- Cards and rows ---------- */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+
+.tool-list {
+  padding: 2px 14px;
+}
+
+.tool-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 52px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.tool-list > .tool-row:last-child,
+#quick-tools > .tool-row:last-child {
+  border-bottom: none;
+}
+
+.label {
+  font-weight: 700;
+}
+
+.group-title {
+  margin: 8px 4px 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.profile-text,
+.site-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.profile-desc {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.profile-helps {
+  font-size: 13px;
+  color: var(--accent-dark);
+}
+
+.profile-helps strong {
+  font-weight: 700;
+}
+
+.tool-select {
+  height: 40px;
+  min-width: 132px;
+  max-width: 150px;
+  padding: 0 8px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+}
+
+/* ---------- Stepper ---------- */
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.step {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.size-value {
+  width: 50px;
+  text-align: center;
+  font-weight: 700;
+}
+
+/* ---------- Switch ---------- */
+
+.switch-button {
+  border: none;
+  background: none;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 30px;
+  border-radius: 15px;
+  background: var(--switch-off);
+  flex-shrink: 0;
+}
+
+.knob {
+  position: absolute;
+  top: 3px;
+  inset-inline-start: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+[aria-pressed="true"] .switch {
+  background: var(--accent);
+}
+
+[aria-pressed="true"] .knob {
+  inset-inline-start: auto;
+  inset-inline-end: 3px;
+}
+
+/* ---------- Buttons ---------- */
+
+.broken {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 4px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.small-button {
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.wide-button {
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.note {
+  margin: 0 4px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ---------- Trigger words editor ---------- */
+
+.words {
+  padding: 4px 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.words .profile-desc {
+  margin: 0;
+}
+
+.words-form {
+  display: flex;
+  gap: 6px;
+}
+
+.words-form input {
+  flex: 1;
+  min-width: 0;
+  height: 40px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.word-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.word {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding-inline-start: 10px;
+  border-radius: 16px;
+  background: var(--accent-tint);
+  color: var(--accent-dark);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.word-remove {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 16px;
+  background: none;
+  color: var(--accent-dark);
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* ---------- Translation card ---------- */
+
+.disclaimer {
+  margin: 0;
+  padding: 0 0 8px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.tr-status {
+  margin: 0 0 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--accent-tint);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.tr-now {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/* ---------- Reading view and Summarize ---------- */
+
+.action-row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr); /* never wider than the popup, even with long words */
+  gap: 8px;
+}
+
+.action-row [hidden] {
+  display: none;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 8px 10px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.action-button svg {
+  flex: none;
+  color: var(--accent);
+}
+
+.action-button:disabled {
+  opacity: 0.5;
+}
+
+.summary {
+  padding: 12px 14px;
+}
+
+.summary-title {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.summary-status {
+  margin: 0 0 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.summary-status:empty {
+  display: none;
+}
+
+.summary-list {
+  margin: 0 0 10px;
+  padding-inline-start: 20px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.summary-list li {
+  margin-bottom: 6px;
+}
+
+.summary-list:empty {
+  display: none;
+}
+
+#summary-read {
+  margin-bottom: 8px;
+}
+
+/* ---------- Quiz reminder ---------- */
+
+.quiz-nudge {
+  padding: 10px 12px;
+  border: 2px solid var(--accent);
+  background: var(--accent-tint);
+}
+
+.quiz-title {
+  margin: 0 0 4px;
+  font-size: 15px;
+}
+
+.quiz-text {
+  margin: 0 0 8px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.quiz-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.primary-button {
+  height: 40px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 12px;
+  background: var(--accent);
+  color: var(--surface);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* ---------- PIN lock and Sync ---------- */
+
+.pin-card {
+  padding: 14px;
+}
+
+.pin-title {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.pin-text {
+  margin: 0 0 10px;
+  font-size: 13px;
+}
+
+.pin-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.pin-input {
+  width: 110px;
+  height: 40px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 20px;
+  letter-spacing: 0.4em;
+  text-align: center;
+}
+
+.pin-error {
+  margin: 0 0 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--warm-tint);
+  color: var(--warm-text);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.pin-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.sync-ask {
+  padding: 4px 0 8px;
+  font-size: 13px;
+}
+
+.sync-ask p {
+  margin: 0 0 8px;
+}
+
+/* ---------- Reading goals ---------- */
+
+.goal-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+}
+
+.goal-bar {
+  display: block;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--line-soft);
+  overflow: hidden;
+}
+
+.goal-fill {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 4px;
+  background: var(--accent);
+}
+
+/* ---------- Home: goal chip and My tools ---------- */
+
+.goal-chip {
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--accent-dark);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.goal-chip.done {
+  border-color: var(--accent);
+  background: var(--accent-tint);
+}
+
+.my-tools-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0 2px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.group-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.picker-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2px;
+  max-height: 220px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.picker-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+}
+
+.picker-item input {
+  width: 18px;
+  height: 18px;
+}
+
+/* ---------- Home tiles: Calm and Low-energy day side by side ---------- */
+/* Title on top (full width). Status and switch on the line below. */
+
+.toggle-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px;
+}
+
+.toggle-row .big-toggle {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "title switch";
+  align-items: center;
+  gap: 4px 6px;
+  min-height: 50px;
+  padding: 8px 10px 8px 12px;
+}
+
+.toggle-row .big-text {
+  display: contents;
+}
+
+.toggle-row .big-title {
+  grid-area: title;
+  font-size: 15px;
+  line-height: 1.25;
+}
+
+/* The switch shows On or Off. The longer status text is kept for screen readers only. */
+.toggle-row .big-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.toggle-row .switch {
+  grid-area: switch;
+  width: 42px;
+  height: 26px;
+  border-radius: 13px;
+}
+
+.toggle-row .knob {
+  width: 20px;
+  height: 20px;
+}
+
+/* Page actions: icon above the word, so 3 buttons fit in any language */
+.action-button {
+  flex-direction: column;
+  gap: 4px;
+  min-height: 54px;
+  padding: 6px;
+  font-size: 13px;
+}
+
+.action-button span {
+  text-align: center;
+  line-height: 1.2;
+  hyphens: auto;
+}
+
+/* Home rows a little tighter, so everything fits without scrolling */
+#tab-home .tool-row {
+  min-height: 44px;
+  padding: 4px 0;
+}
+
+/* The mood question sits next to the logo, up to 2 lines (the logo already says "Ease"). */
+.link-button#mood-link {
+  max-width: 100%;
+  text-align: start;
+  font-size: 14px;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* No divider under Text size when "My tools" is hidden (new users see the quiz reminder instead) */
+#tab-home .tool-row:has(+ .my-tools-head[hidden]) {
+  border-bottom: none;
+}
+
+/* ---------- Home: search, basics, compact spacing ---------- */
+
+#tab-home {
+  gap: 8px;
+}
+
+.home-search {
+  height: 40px;
+}
+
+.basics {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+  padding: 8px 0 6px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.basics .cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.basics .cap,
+.basics .cell .label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.basics .stepper {
+  justify-content: space-between;
+}
+
+.basics .step {
+  width: 38px;
+  height: 36px;
+}
+
+/* the contrast row from makeToolRow, shown as a small cell */
+.basics .cell .tool-row {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  min-height: 0;
+  padding: 0;
+  border: none;
+}
+
+.basics .tool-select {
+  width: 100%;
+  height: 36px;
+}
+
+#tab-home .my-tools-head {
+  padding: 6px 0 0;
+  border-top: none;
+}
+
+#tab-home .broken {
+  justify-content: center;
+  gap: 4px;
+  font-size: 13px;
+}
+
+#tab-home .broken .link-button {
+  font-size: 13px;
+  text-decoration: underline;
+}
+
+.main {
+  padding: 10px 12px;
+}
+
+#basics:has(+ .my-tools-head[hidden]) {
+  border-bottom: none;
+}
+
+/* Line up the two captions ("Text size" and "Contrast") */
+.basics {
+  align-items: start;
+}
+
+.basics .cap,
+.basics .cell .label {
+  display: block;
+  margin: 0;
+  line-height: 1.2;
+  min-height: 0;
+}
+
+.main {
+  padding: 8px 12px;
+}
+
+#tab-home .basics .tool-row {
+  min-height: 0;
+  padding: 0;
+  border: none;
+}
+
+/* ---------- My Settings: main list and pages ---------- */
+
+.set-main,
+.set-page,
+.set-pg,
+.set-pg-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.set-main[hidden],
+.set-page[hidden],
+.set-pg[hidden] {
+  display: none;
+}
+
+.prof-card {
+  padding: 10px 14px 12px;
+}
+
+.prof-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.prof-title {
+  margin: 0;
+  font-size: 16px;
+}
+
+.prof-head .link-button {
+  color: var(--accent-dark);
+  text-decoration: underline;
+}
+
+.prof-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.prof-chips[hidden] {
+  display: none;
+}
+
+.prof-chip {
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--accent-tint);
+  color: var(--accent-dark);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+#prof-none {
+  margin: 6px 0 0;
+}
+
+.prof-change {
+  margin-top: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px dashed var(--accent);
+  background: none;
+  color: var(--accent-dark);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.cats {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.cats li + li {
+  border-top: 1px solid var(--line-soft);
+}
+
+.cat {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 54px;
+  padding: 6px 12px 6px 14px;
+  border: none;
+  background: none;
+  color: var(--text);
+  text-align: start;
+}
+
+.cat:hover {
+  background: var(--ground);
+}
+
+.cat:focus-visible {
+  outline-offset: -3px;
+}
+
+.cat-icon {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+}
+
+.cat-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.cat-name {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.cat-desc {
+  font-size: 12.5px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cat-badge {
+  flex: none;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--accent-tint);
+  color: var(--accent-dark);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.cat-badge.off {
+  background: var(--line-soft);
+  color: var(--muted);
+}
+
+.cat-badge[hidden] {
+  display: none;
+}
+
+.cat-arrow {
+  flex: none;
+  color: var(--muted);
+  font-size: 22px;
+  line-height: 1;
+}
+
+[dir="rtl"] .cat-arrow,
+[dir="rtl"] .page-back svg {
+  transform: scaleX(-1);
+}
+
+.page-head {
+  position: sticky;
+  top: -12px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: -12px -14px 0;
+  padding: 10px 14px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+.page-back {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.page-title {
+  margin: 0;
+  font-size: 17px;
+}
+
+.page-title:focus {
+  outline: none;
+}
+
+.whats-on {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.whats-on[hidden] {
+  display: none;
+}
+
+.on-source {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 6px 4px 0;
+}
+
+.on-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.on-why {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.on-source .link-button {
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.on-sub {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.on-empty {
+  margin: 0 4px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* "Only here": a tool changed for this website only */
+.here-tag {
+  display: inline-block;
+  margin-inline-start: 6px;
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: var(--accent-tint);
+  color: var(--accent-dark);
+  font-size: 11px;
+  font-weight: 700;
+  vertical-align: middle;
+}
+
+/* ---------- Home tiles (tap to change the level) ---------- */
+
+.tiles-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2px 4px -2px;
+}
+
+.tile-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.tile-grid[hidden],
+.tiles-head[hidden] {
+  display: none;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-height: 88px;
+  padding: 9px 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.tile svg {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  color: var(--accent);
+}
+
+.tile-name {
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.tile-value {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.tile.on {
+  border: 2px solid var(--accent);
+  padding: 8px 5px 7px; /* keeps the size the same with the thicker border */
+  background: var(--accent-tint);
+}
+
+.tile.on .tile-value {
+  color: var(--accent-dark);
+  font-weight: 700;
+}
+
+.tile-dots {
+  display: flex;
+  gap: 4px;
+  margin-top: auto;
+}
+
+.tile-dots i {
+  width: 12px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--line);
+}
+
+.tile-dots i.full {
+  background: var(--accent);
+}
+
+.tile:focus-visible {
+  outline: 3px solid var(--accent-dark);
+  outline-offset: 2px;
+}
+
+/* Tiles a little tighter, so two-line names (French, Punjabi) still fit without scrolling */
+.tile {
+  gap: 3px;
+  min-height: 84px;
+  padding: 7px 5px 7px;
+}
+
+.tile.on {
+  padding: 6px 4px 6px;
+}
+
+.tile-name {
+  line-height: 1.15;
+}
+
+/* The check-in now sits inside <main>, which already has padding */
+#main > .checkin {
+  padding: 8px 2px;
+}
+
+/* Sound limiter bar (Home). Only shown while the tab plays sound. */
+.sound-bar {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 4px 10px;
+  padding: 10px 10px 10px 12px;
+}
+
+.sound-bar.on {
+  background: var(--accent-tint);
+  border-color: #C9CEE0;
+}
+
+.sound-icon {
+  display: grid;
+  color: var(--accent-dark);
+}
+
+.sound-icon svg[hidden] {
+  display: none;
+}
+
+.sound-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.sound-title {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.sound-sub {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.sound-controls {
+  display: flex;
+  gap: 6px;
+}
+
+.sound-controls [hidden] {
+  display: none;
+}
+
+.sound-level {
+  height: 40px;
+  max-width: 108px;
+  padding: 0 4px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+}
+
+.sound-error {
+  grid-column: 1 / -1;
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--warm-text);
+}
+
+/* When on: the level menu and Stop get their own line, so long languages fit. */
+.sound-bar.on .sound-controls {
+  grid-column: 2 / -1;
+}
+
+.sound-bar.on .sound-controls label {
+  flex: 1;
+}
+
+.sound-bar.on .sound-level {
+  width: 100%;
+  max-width: none;
+}
+
+/* Time limits */
+.time-list { list-style: none; margin: 4px 0 8px; padding: 0; }
+.time-item { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line-soft); }
+.time-item:first-child { border-top: none; }
+.time-site { display: flex; flex-direction: column; min-width: 0; }
+.time-site b { overflow-wrap: anywhere; }
+.time-site span { font-size: 13px; color: var(--muted); }
+.time-bar { display: block; height: 6px; border-radius: 3px; background: var(--line); margin-top: 4px; overflow: hidden; }
+.time-bar i { display: block; height: 100%; background: var(--accent); }
+.time-item .tool-select { max-width: 112px; }
+.time-error { min-height: 0; margin: 4px 0 0; font-size: 13px; color: #8A2B10; }
+.time-error:empty { display: none; }
+.wide-small { width: 100%; margin-top: 8px; }
+.time-limits .tool-row { padding-left: 0; padding-right: 0; }
+
+/* Show me how (Home search) */
+.smh-ask { display: block; width: 100%; text-align: left; padding: 12px 14px; border: none; border-bottom: 1px solid var(--line-soft);
+           background: #FFF6D1; color: var(--text); font: inherit; font-weight: 700; font-size: 14.5px; line-height: 1.35; cursor: pointer; border-radius: 16px 16px 0 0; }
+.smh-ask:only-child { border-radius: 16px; border-bottom: none; }
+
+/* AI helpers */
+.ai-status { font-weight: 700; margin: 6px 0; font-size: 14px; }
+.ai-status[data-state="ready"] { color: #1E5631; }
+.ai-status[data-state="no"] { color: var(--muted); font-weight: 400; }
+.ai-card .tool-row { padding-left: 0; padding-right: 0; }
+
+/* ---------- Helpers row on Home: Show me how, Explain simply, Time limits ---------- */
+
+.helper-row .action-button {
+  flex-direction: column;
+  gap: 4px;
+  min-height: 64px;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.helper-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.helper-status {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.helper-tip {
+  margin: 0;
+  padding: 10px 12px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+p.helper-tip {
+  border-radius: 12px;
+  background: var(--accent-tint);
+  color: var(--accent-dark);
+}
+
+.helper-tip p {
+  margin: 0 0 6px;
+}

@@ -1,0 +1,11 @@
+{
+  "name": "ease-performance-tests",
+  "private": true,
+  "description": "Measures how much time and memory Ease adds to a heavy page, per tool.",
+  "scripts": {
+    "bench": "node bench.js"
+  },
+  "devDependencies": {
+    "playwright": "1.56.0"
+  }
+}

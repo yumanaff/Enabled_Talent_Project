@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ease – turn the noisy web down to calm</title>
+  <meta name="description" content="Ease is a free Chrome extension for ADHD, dyslexia, autism, low vision, tremor and Parkinson's, older adults and scam safety. Try the live demo on this page, with nothing to install. No account. Your settings stay on your computer. 10 languages.">
+  <link rel="canonical" href="https://EASE-SITE-URL/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ease – turn the noisy web down to calm">
+  <meta property="og:description" content="Everyone builds flashy 3D websites. Few build them for disabled people. Try the live demo: turn off pop-ups, flashing ads and motion, with nothing to install.">
+  <meta property="og:image" content="img/popup-home.png">
+  <meta name="theme-color" content="#4A5A8C">
+  <link rel="stylesheet" href="style.css">
+  <!-- For search engines and AI assistants: what Ease is, in a standard format -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Ease",
+    "applicationCategory": "BrowserApplication",
+    "applicationSubCategory": "Accessibility",
+    "operatingSystem": "Windows, macOS, Linux, ChromeOS (Google Chrome)",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CAD" },
+    "description": "A free Chrome extension that applies an accessibility profile to every website: ADHD, dyslexia, autism and sensory overload, low vision, colour blindness, migraine, photosensitive epilepsy, anxiety, memory difficulties, tremor and Parkinson's, Deaf and hard of hearing, older adults and scam safety. No account. Settings stay on the user's computer.",
+    "inLanguage": ["en", "fr", "es", "it", "hi", "pa", "ar", "tl", "zh-CN", "zh-HK"],
+    "featureList": [
+      "15 profiles you can combine",
+      "Live demo on the website, with nothing to install",
+      "Explain simply: hard text in a few short points, with on-device AI",
+      "Show me how: points to the right button on a website",
+      "Time limits: kind daily limits for chosen websites",
+      "Text size, spacing, readable fonts including OpenDyslexic and Atkinson Hyperlegible",
+      "Dark, high and soft contrast",
+      "Calm mode: pauses animations and autoplay videos, softens ads",
+      "Hides pop-ups, cookie boxes and fake pressure messages",
+      "Scam guard: look-alike links, fake virus pages, unsafe password boxes",
+      "Shaky hands filter, typing filter, bigger click areas, big scroll buttons",
+      "Caregiver PIN lock and setup for someone else, without accounts"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "Is Ease free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Ease is free. There are no ads and no paid version." } },
+      { "@type": "Question", "name": "Can I try Ease without installing it?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. The website has a live demo. It runs the real Ease code on a sample website, right in your browser." } },
+      { "@type": "Question", "name": "Do I need an account?", "acceptedAnswer": { "@type": "Answer", "text": "No. Ease has no accounts and no server. Your settings stay on your computer." } },
+      { "@type": "Question", "name": "Does Ease read or send my data?", "acceptedAnswer": { "@type": "Answer", "text": "No. Ease changes how pages look on your computer. It does not send page text, passwords or browsing history to anyone. The AI helpers use Chrome's built-in AI on your device." } },
+      { "@type": "Question", "name": "Can I set up Ease for a parent?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Answer the setup quiz for them, save a setup file, and load it on their computer. A 4-digit PIN can lock their settings." } },
+      { "@type": "Question", "name": "Which languages does Ease support?", "acceptedAnswer": { "@type": "Answer", "text": "English, French, Spanish, Italian, Hindi, Punjabi, Arabic, Tagalog, Simplified Chinese and Traditional Chinese (Hong Kong)." } }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to main content</a>
+  <a class="skip" href="#demo">Skip to the live demo</a>
+
+  <header class="top">
+    <a class="brand" href="#main"><span class="dot" aria-hidden="true">≈</span><span data-name>Ease</span></a>
+    <nav aria-label="Main">
+      <ul class="nav">
+        <li><a href="#demo">Live demo</a></li>
+        <li><a href="#helpers">AI helpers</a></li>
+        <li><a href="#who">Who it's for</a></li>
+        <li><a href="#privacy">Privacy</a></li>
+      </ul>
+    </nav>
+    <a class="btn primary small-btn" href="#get">Download</a>
+    <button id="calm-site" class="calm-toggle" type="button" aria-pressed="false">
+      <span class="sw" aria-hidden="true"></span><span>Calm this site</span>
+    </button>
+  </header>
+
+  <main id="main">
+    <!-- 1. The story. It plays like a video while you scroll. With "Calm this site" or reduced motion, it is a still picture. -->
+    <section id="story" class="story" aria-labelledby="story-title">
+      <div class="story-stage">
+        <canvas id="scene" aria-hidden="true"></canvas>
+        <div id="tags" class="tags" aria-hidden="true"></div>
+        <div class="progress" aria-hidden="true"><i id="progress"></i></div>
+
+        <div class="story-copy">
+          <h1 id="story-title" class="sr-only">Ease: turn the noisy web down to calm</h1>
+          <ol class="steps">
+            <li class="step" data-step="0">
+              <p class="kicker"><span aria-hidden="true">00 ·</span> Every new website</p>
+              <h2>The web got <em>beautiful.</em></h2>
+              <p class="lead">3D, video, motion. Every new website looks like this now.</p>
+            </li>
+            <li class="step" data-step="1">
+              <p class="kicker"><span aria-hidden="true">01 ·</span> Look closer</p>
+              <h2>And <em>loud.</em></h2>
+              <p class="lead">Autoplay sound. Flashing ads. Pop-ups. Tiny grey text. Hard to use for a lot of people.</p>
+            </li>
+            <li class="step" data-step="2">
+              <p class="kicker"><span aria-hidden="true">02 ·</span> Nobody builds for them</p>
+              <h2>Nobody asks who <em>can't</em> use it.</h2>
+              <p class="lead">Older adults. People with ADHD, autism, epilepsy, low vision or shaky hands. We built for them. Try it: turn things off.</p>
+            </li>
+            <li class="step" data-step="3">
+              <p class="kicker"><span aria-hidden="true">03 ·</span> We do</p>
+              <h2>Now it's <em>calm.</em></h2>
+              <p class="lead">Same page. Ease turned off the noise. It works on every website you visit, and on this one too.</p>
+              <p class="cta-row"><a class="btn primary" href="#demo">Try the real thing ↓</a><a class="btn" href="#get">Download for Chrome</a></p>
+            </li>
+          </ol>
+        </div>
+
+        <div id="dock" class="dock" role="group" aria-label="Turn the noise off">
+          <button type="button" class="pill" data-layer="video" aria-pressed="false"><span class="sw" aria-hidden="true"></span>Pause video</button>
+          <button type="button" class="pill" data-layer="popup" aria-pressed="false"><span class="sw" aria-hidden="true"></span>Hide pop-ups</button>
+          <button type="button" class="pill" data-layer="ad" aria-pressed="false"><span class="sw" aria-hidden="true"></span>Calm ads</button>
+          <button type="button" class="pill" data-layer="cookie" aria-pressed="false"><span class="sw" aria-hidden="true"></span>Hide cookie box</button>
+          <button type="button" class="pill" id="big-text" aria-pressed="false"><span class="sw" aria-hidden="true"></span>Bigger text</button>
+          <button type="button" class="pill" id="no-motion" aria-pressed="false"><span class="sw" aria-hidden="true"></span>No motion</button>
+        </div>
+        <p class="scroll-hint" aria-hidden="true">Scroll ↓</p>
+      </div>
+    </section>
+
+    <!-- 2. Live demo: the real extension code runs on a sample website -->
+    <section id="demo" class="demo-sec" aria-labelledby="demo-title">
+      <div class="wrap">
+        <p class="kicker">Live demo · nothing to install</p>
+        <h2 id="demo-title">Try the real thing, right here.</h2>
+        <p class="lead">Here is the real <span data-name>Ease</span> popup, the same one you get in Chrome, next to a noisy sample news site. Change anything in the popup, and the website changes right away.</p>
+        <ul class="demo-tips">
+          <li><strong>Home:</strong> Calm this page, text size, Reading view, your tools</li>
+          <li><strong>My Settings:</strong> 15 profiles and all 35+ tools, in 5 groups</li>
+          <li><strong>This Site:</strong> changes for this one website only</li>
+        </ul>
+
+        <div class="demo">
+          <div class="popup-wrap">
+            <iframe id="popup-frame" data-src="demo/ext/popup/popup.html" title="The Ease popup (demo)" width="360" height="600"></iframe>
+            <button id="before-after" class="btn" type="button" aria-pressed="false">Show the website without <span data-name>Ease</span></button>
+          </div>
+
+          <div class="browser">
+            <div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i><span>dailyexample.news / benefit-changes-2027</span></div>
+            <iframe id="frame" data-src="demo/sample.html" title="Demo website: The Daily Example, a noisy sample news page"></iframe>
+          </div>
+        </div>
+        <p id="toast" class="toast" role="status"></p>
+      </div>
+    </section>
+
+    <!-- 3. The AI helpers, on the same demo website -->
+    <section id="helpers" class="band" aria-labelledby="helpers-title">
+      <div class="wrap">
+        <p class="kicker">New</p>
+        <h2 id="helpers-title">Helpers that feel like magic.</h2>
+        <p class="lead">Each one works on the demo website above. In Chrome, the AI runs on your own computer.</p>
+        <ul class="cards">
+          <li class="card">
+            <h3>Explain simply <span class="tag">AI</span></h3>
+            <p>Select hard text. Get 3 short points, in the way that fits you. "Even simpler" goes further.</p>
+            <button class="btn" type="button" id="try-explain">Explain the hard paragraph</button>
+            <p class="small" id="explain-note">Or select any text in the demo website, then press the button that appears.</p>
+          </li>
+          <li class="card">
+            <h3>Show me how <span class="tag">AI</span></h3>
+            <p>Type what you want to do. A pointer glides to the right button and says "Click here", step by step. It works in web apps like Word online too. It never clicks "buy" or "send" for you.</p>
+            <form id="smh-form" class="smh">
+              <label for="smh-goal">What do you want to do?</label>
+              <span class="smh-row"><input id="smh-goal" type="text" value="turn on captions" autocomplete="off"><button class="btn" type="submit">Show me</button></span>
+            </form>
+          </li>
+          <li class="card">
+            <h3>Time limits</h3>
+            <p>A kind daily limit for sites like Instagram. No shame. One "5 more minutes" a day.</p>
+            <button class="btn" type="button" id="try-time">Pretend my time is up</button>
+            <button class="link" type="button" id="reset-time">Reset the time</button>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. Who it's for -->
+    <section id="who" class="wrap" aria-labelledby="who-title">
+      <p class="kicker">15 profiles · combine them</p>
+      <h2 id="who-title">Who Ease is for</h2>
+      <ul class="grid">
+        <li><h3>ADHD and focus</h3><p>A reading line, calm pages without moving ads, kind time limits and short explanations.</p></li>
+        <li><h3>Dyslexia</h3><p>Clear fonts (including OpenDyslexic and Atkinson Hyperlegible), more space, and read aloud with word highlighting.</p></li>
+        <li><h3>Autism and sensory overload</h3><p>Pauses animations and autoplay videos, softens bright colours, limits loud volume, and blurs words you choose.</p></li>
+        <li><h3>Low vision</h3><p>Bigger text, dark or high contrast, a big cursor, a strong focus ring and big tooltips for icons.</p></li>
+        <li><h3>Tremor, Parkinson's and arthritis</h3><p>Ignores clicks made twice by mistake, makes small links easier to hit, and adds big scroll buttons.</p></li>
+        <li><h3>Older adults</h3><p>Bigger text, clear links, no pop-ups, names under icon buttons, Show me how, and scam warnings.</p></li>
+        <li><h3>Scam safety</h3><p>Warns about look-alike websites (like paypa1.com), fake virus pages and password boxes on unsafe pages.</p></li>
+        <li><h3>Anxiety and stress</h3><p>Hides fake pressure like "Only 2 left!" and countdown timers, and keeps pages calm.</p></li>
+      </ul>
+    </section>
+
+    <!-- 5. Privacy -->
+    <section id="privacy" class="band" aria-labelledby="privacy-title">
+      <div class="wrap privacy">
+        <div>
+          <p class="kicker">Private by design</p>
+          <h2 id="privacy-title">0 bytes sent.</h2>
+          <p class="lead">No account. No Ease server. The AI helpers and translation use Chrome's built-in AI, on your own computer.</p>
+        </div>
+        <ul class="stats">
+          <li><strong>35+</strong><span>tools</span></li>
+          <li><strong>15</strong><span>profiles</span></li>
+          <li><strong>10</strong><span>languages</span></li>
+          <li><strong>0</strong><span>accessibility problems on 27 screens (axe-core, WCAG 2.2 AA)</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 6. Caregivers -->
+    <section class="wrap" aria-labelledby="care-title">
+      <p class="kicker">For families</p>
+      <h2 id="care-title">Set it up for someone you love.</h2>
+      <ul class="grid three">
+        <li><h3>Set up for someone else</h3><p>Answer the quiz for your parent or child. Save a setup file. Open it on their computer.</p></li>
+        <li><h3>Lock with a PIN</h3><p>A 4-digit PIN keeps their settings safe. Home still works without the PIN.</p></li>
+        <li><h3>Same settings everywhere</h3><p>Turn on Chrome Sync, and the settings follow them to their other computers.</p></li>
+      </ul>
+    </section>
+
+    <!-- 7. Questions -->
+    <section id="faq" class="band" aria-labelledby="faq-title">
+      <div class="wrap narrow">
+        <h2 id="faq-title">Questions</h2>
+        <details><summary>Is Ease free?</summary><p>Yes. Ease is free. There are no ads and no paid version.</p></details>
+        <details><summary>Is the demo the real extension?</summary><p>Yes. The demo loads the same code as the Chrome extension. Only the settings are kept in this page, not in Chrome. If your browser has no built-in AI, Explain simply shows a recorded example.</p></details>
+        <details><summary>Do I need an account?</summary><p>No. Ease has no accounts and no server. Your settings stay on your computer.</p></details>
+        <details><summary>Will Ease break websites?</summary><p>We test Ease on many busy websites. If a page looks wrong, turn Ease off for that site only.</p></details>
+        <details><summary>Which languages does Ease support?</summary><p>English, French, Spanish, Italian, Hindi, Punjabi, Arabic, Tagalog, Simplified Chinese and Traditional Chinese (Hong Kong).</p></details>
+      </div>
+    </section>
+
+    <section id="get" class="wrap get" aria-labelledby="get-title">
+      <p class="kicker">Free · Chrome on Windows, Mac, Linux and ChromeOS</p>
+      <h2 id="get-title">Make the web calm.</h2>
+      <p class="lead"><span data-name>Ease</span> is coming to the Chrome Web Store soon. Until then, you can install it in about one minute.</p>
+      <p class="cta-row"><a class="btn primary" id="download" href="downloads/ease-extension.zip" download>Download for Chrome · version 0.24.0</a><a class="btn" href="https://EASE-GITHUB-URL">See the code on GitHub</a></p>
+      <ol class="install">
+        <li><span><strong>Unzip</strong> the file you downloaded.</span></li>
+        <li><span>In Chrome, open <code>chrome://extensions</code>.</span></li>
+        <li><span>Turn on <strong>Developer mode</strong> (top right).</span></li>
+        <li><span>Click <strong>Load unpacked</strong>, and choose the unzipped folder.</span></li>
+      </ol>
+      <p class="small">The setup page opens by itself. It asks a few questions and turns on the right profiles for you.</p>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <p><span data-name>Ease</span> is a student project from Ottawa, Canada.</p>
+      <p>3D with Three.js (MIT). Thanks to Mozilla Readability (Apache 2.0), Atkinson Hyperlegible and OpenDyslexic (SIL Open Font License).</p>
+    </div>
+  </footer>
+
+  <script src="site.js"></script>
+  <script src="story.js"></script>
+</body>
+</html>

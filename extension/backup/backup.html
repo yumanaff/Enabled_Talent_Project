@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ease · Back up</title>
+  <link rel="stylesheet" href="backup.css">
+</head>
+<body>
+  <!-- Back up or move settings. Ease has no accounts, so a file is how settings move. -->
+  <main class="page">
+    <p class="brand"><span class="logo" aria-hidden="true">≈</span> <span data-i18n="appName">Ease</span></p>
+    <h1 data-i18n="bkTitle">Back up or move your settings</h1>
+    <p class="intro" data-i18n="bkIntro"></p>
+
+    <section class="card">
+      <h2 data-i18n="bkSaveTitle">On this computer</h2>
+      <button id="save" class="primary" data-i18n="bkSave">Save my settings to a file</button>
+      <p class="small" data-i18n="bkPrivacy"></p>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="bkLoadTitle">On the new computer</h2>
+      <label class="file-button">
+        <input id="file" type="file" accept=".json,application/json">
+        <span data-i18n="bkLoad">Load settings from a file</span>
+      </label>
+      <p class="small" data-i18n="bkLoadNote"></p>
+    </section>
+
+    <p id="message" class="message" role="status" hidden></p>
+  </main>
+
+  <script src="../shared/defaults.js"></script>
+  <script src="../shared/profiles.js"></script>
+  <script src="../shared/storage.js"></script>
+  <script src="../shared/i18n.js"></script>
+  <script src="backup.js"></script>
+</body>
+</html>
