@@ -1,0 +1,84 @@
+/* Hands-free side panel. Same soft palette as the popup. */
+:root {
+  --ground: #F1F1EC;
+  --surface: #FBFBF9;
+  --line: #DDDDD6;
+  --text: #2A2F36;
+  --muted: #555B66;
+  --accent: #4A5A8C;
+  --accent-dark: #34406A;
+  --accent-tint: #E8EAF1;
+  --warm-tint: #FBEDE5;
+  --warm-text: #6B2E10;
+  --good: #2f7d4f;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ground: #171A22;
+    --surface: #1F2330;
+    --line: #353B4C;
+    --text: #ECECE6;
+    --muted: #B4B8C4;
+    --accent: #9AA6D4;
+    --accent-dark: #C3CBEA;
+    --accent-tint: #2A3046;
+    --warm-tint: #3A2A22;
+    --warm-text: #F4C9B0;
+    --good: #7FCB9C;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--text);
+  font-family: "Atkinson Hyperlegible Next", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+}
+main { padding: 16px; display: flex; flex-direction: column; gap: 14px; max-width: 520px; margin: 0 auto; }
+header { display: flex; align-items: center; gap: 10px; }
+.logo { font-size: 28px; color: var(--accent); font-weight: 700; }
+h1 { font-size: 22px; margin: 0; }
+h2 { font-size: 17px; margin: 0 0 8px; }
+p { margin: 0; }
+.intro, .hint { color: var(--muted); }
+.hint { font-size: 14px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+.card.warn { background: var(--warm-tint); color: var(--warm-text); border-color: transparent; }
+button, select {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  border-radius: 12px;
+  padding: 10px 14px;
+  min-height: 48px;
+  cursor: pointer;
+}
+button.primary { background: var(--accent); color: var(--ground); border-color: var(--accent); font-weight: 700; }
+button.big { min-height: 64px; font-size: 19px; }
+button.primary[aria-pressed="true"] { background: var(--surface); color: var(--accent-dark); }
+button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px solid var(--accent-dark); outline-offset: 2px; }
+.camera { display: flex; flex-direction: column; gap: 8px; }
+.view { position: relative; aspect-ratio: 4 / 3; background: #0f1218; border-radius: 16px; overflow: hidden; }
+.view video, .view canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+.picture-toggle { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; font-weight: 700; }
+.picture-toggle[aria-pressed="true"] .slash { display: none; }
+.no-picture { display: none; position: absolute; inset: 0; margin: 0; align-items: center; justify-content: center; padding: 16px; text-align: center; color: #c3cbea; font-weight: 700; }
+/* The picture is hidden, but the video still plays (the face is still followed). */
+.view.hidden video, .view.hidden canvas { opacity: 0; }
+.view.hidden .no-picture { display: flex; }
+.view.hidden { aspect-ratio: auto; min-height: 90px; }
+.state { font-weight: 700; }
+.state.good { color: var(--good); }
+.heard { font-size: 20px; font-weight: 700; min-height: 1.4em; overflow-wrap: anywhere; }
+.row { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; }
+.row.col { flex-direction: column; align-items: stretch; gap: 4px; }
+.row input[type="checkbox"] { width: 26px; height: 26px; accent-color: var(--accent); flex: none; }
+.say { margin: 0; padding-left: 20px; }
+.say li { margin: 3px 0; }
+.safe p { font-size: 15px; }
+body.grant main { padding-top: 40px; }
