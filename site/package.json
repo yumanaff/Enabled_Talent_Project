@@ -1,0 +1,12 @@
+{
+  "name": "ease-website",
+  "private": true,
+  "description": "Builds the website's 3D story (one file with Three.js inside) and copies the extension code for the live demo.",
+  "scripts": {
+    "build": "esbuild src/story.js --bundle --minify --format=iife --target=es2020 --outfile=story.js --legal-comments=eof && node tools/build-demo.js"
+  },
+  "devDependencies": {
+    "esbuild": "0.24.0",
+    "three": "0.169.0"
+  }
+}
