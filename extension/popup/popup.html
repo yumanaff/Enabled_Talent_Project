@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Ease</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <!-- Header: logo, today's mood, language -->
+  <header class="header">
+    <span class="logo" aria-hidden="true">≈</span>
+    <div class="header-text">
+      <h1 class="app-name sr-only" data-i18n="appName">Ease</h1>
+      <button id="mood-link" class="link-button" hidden></button>
+    </div>
+    <!-- Reading goal: a small chip ("📖 2/3"). Click for details. -->
+    <button id="goal-chip" class="goal-chip" aria-expanded="false" aria-controls="goal-card" hidden></button>
+    <label class="sr-only" for="language" data-i18n="language">Language</label>
+    <select id="language" class="lang-select"></select>
+  </header>
+
+
+  <main id="main" class="main">
+    <!-- Daily check-in. Shown once a day, before the tabs. -->
+    <section id="checkin" class="checkin" aria-labelledby="checkin-title" hidden>
+      <h2 id="checkin-title" class="checkin-title" data-i18n="checkinTitle">How are you feeling today?</h2>
+      <p class="checkin-sub" data-i18n="checkinSub">We will adjust websites for today only.</p>
+      <button class="mood" data-mood="good">
+        <span class="mood-name" data-i18n="mood_good">Good</span>
+        <span class="mood-desc" data-i18n="moodDesc_good">Use my normal settings</span>
+      </button>
+      <button class="mood" data-mood="okay">
+        <span class="mood-name" data-i18n="mood_okay">Okay</span>
+        <span class="mood-desc" data-i18n="moodDesc_okay">A little calmer than normal</span>
+      </button>
+      <button class="mood" data-mood="tired">
+        <span class="mood-name" data-i18n="mood_tired">Tired or overwhelmed</span>
+        <span class="mood-desc" data-i18n="moodDesc_tired">Strong calm, bigger text, softer colours</span>
+      </button>
+      <button id="checkin-never" class="link-button" data-i18n="checkinNever">Don't ask me every day</button>
+    </section>
+    <!-- TAB 1: Home. The most used actions, 1 tap each. -->
+    <section id="tab-home" class="tab-panel">
+      <!-- Search on Home too, so any setting is one search away -->
+      <label class="search home-search">
+        <span class="sr-only" data-i18n="searchLabel">Find a setting</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+        <input id="home-search" type="search" autocomplete="off">
+      </label>
+      <div id="home-search-results" class="card tool-list" hidden></div>
+      <!-- Shown after "Skip for now" in setup: an easy way back to the quiz -->
+      <section id="quiz-nudge" class="card quiz-nudge" hidden>
+        <p class="quiz-text" data-i18n="quizNudgeText">Take the 1-minute quiz. Ease will set things up for you.</p>
+        <div class="quiz-buttons">
+          <button id="quiz-start" class="primary-button" data-i18n="quizNudgeStart">Start the quiz</button>
+          <button id="quiz-hide" class="small-button" data-i18n="quizNudgeHide">Not now</button>
+        </div>
+      </section>
+
+      <!-- Calm and Low-energy day: two tiles side by side, so Home fits without scrolling -->
+      <div class="toggle-row">
+      <button id="calm" class="big-toggle" aria-pressed="false">
+        <span class="big-text">
+          <span class="big-title" data-i18n="calmTitle">Calm this page</span>
+          <span id="calm-status" class="big-status"></span>
+        </span>
+        <span class="switch" aria-hidden="true"><span class="knob"></span></span>
+      </button>
+
+      <button id="low-energy" class="big-toggle" aria-pressed="false">
+        <span class="big-text">
+          <span class="big-title" data-i18n="lowEnergyTitle">Low-energy day</span>
+          <span id="low-energy-status" class="big-status"></span>
+        </span>
+        <span class="switch" aria-hidden="true"><span class="knob"></span></span>
+      </button>
+      </div>
+
+      <!-- Sound limiter: shows only while this tab plays sound. See sound-limit.js -->
+      <section id="sound-bar" class="card sound-bar" aria-labelledby="sound-title" hidden>
+        <span class="sound-icon"><svg id="sound-icon-off" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10v4h4l5 4V6L8 10z"></path><path d="M16.5 8.5a5 5 0 0 1 0 7"></path><path d="M19 6a8.5 8.5 0 0 1 0 12"></path></svg><svg id="sound-icon-on" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><path d="M4 10v4h4l5 4V6L8 10z"></path><path d="M16 9h5"></path><path d="M16 12h5"></path><path d="M16 15h5"></path></svg></span>
+        <span class="sound-text">
+          <span id="sound-title" class="sound-title"></span>
+          <span id="sound-sub" class="sound-sub"></span>
+        </span>
+        <span class="sound-controls">
+          <label hidden><span class="sr-only" data-i18n="sndLevel">Sound level</span><select id="sound-level" class="sound-level"></select></label>
+          <button id="sound-go" class="primary-button" data-i18n="sndLimit">Limit</button>
+          <button id="sound-stop" class="small-button" data-i18n="sndStop" hidden>Stop</button>
+        </span>
+        <p id="sound-error" class="sound-error" role="alert" hidden></p>
+      </section>
+
+      <!-- Page helpers: a clean reading page, and a short summary -->
+      <div class="action-row">
+        <button id="reading-view" class="action-button">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5.5C5 4.5 8 4.5 12 6.5c4-2 7-2 9-1v13c-2-1-5-1-9 1-4-2-7-2-9-1z"></path><path d="M12 6.5v13"></path></svg>
+          <span data-i18n="rvButton">Reading view</span>
+        </button>
+        <button id="summarize" class="action-button">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11"></path><path d="M9 12h11"></path><path d="M9 18h7"></path><circle cx="4.5" cy="6" r="1"></circle><circle cx="4.5" cy="12" r="1"></circle><circle cx="4.5" cy="18" r="1"></circle></svg>
+          <span data-i18n="sumButton">Summarize</span>
+        </button>
+        <button id="tr-action" class="action-button" hidden>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h9"></path><path d="M8.5 3v2"></path><path d="M11 5c-1 4-4 7-7 8"></path><path d="M6 9c1.5 2 3.5 3.5 6 4"></path><path d="M13 21l4-9 4 9"></path><path d="M14.5 18h5"></path></svg>
+          <span data-i18n="trAction">Translate</span>
+        </button>
+      </div>
+
+      <!-- The helpers: Show me how, Explain simply, Time limits. One tap each. -->
+      <div class="action-row helper-row">
+        <button id="help-smh" class="action-button" aria-controls="smh-hint">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M15.5 8.5l-2 5-5 2 2-5z"></path></svg>
+          <span data-i18n="smhTitle">Show me how</span>
+        </button>
+        <button id="help-explain" class="action-button" aria-expanded="false" aria-controls="explain-tip">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3"></path><path d="M12 18v3"></path><path d="M3 12h3"></path><path d="M18 12h3"></path><path d="M6.5 6.5l2 2"></path><path d="M15.5 15.5l2 2"></path><path d="M17.5 6.5l-2 2"></path><path d="M8.5 15.5l-2 2"></path></svg>
+          <span data-i18n="exButton">Explain simply</span>
+        </button>
+        <button id="help-time" class="action-button">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2.5 2"></path><path d="M9 3h6"></path></svg>
+          <span class="helper-text"><span data-i18n="timeTitle">Time limits</span><small id="help-time-status" class="helper-status"></small></span>
+        </button>
+      </div>
+      <!-- Hands-free: big, because it changes everything for people who can not use their hands -->
+      <button id="home-handsfree" class="hf-home" type="button">
+        <svg class="hf-icon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5"></circle><path d="M10 8.5h.01"></path><path d="M14 8.5h.01"></path><path d="M10.5 11.2c.9.6 2.1.6 3 0"></path><path d="M5 21c1-3.5 3.8-5.5 7-5.5s6 2 7 5.5"></path><path d="M2.5 9a9.5 9.5 0 0 1 2-5"></path><path d="M21.5 9a9.5 9.5 0 0 0-2-5"></path></svg>
+        <span class="hf-home-text"><b data-i18n="hfHomeTitle">Hands-free</b><small data-i18n="hfHomeSub">Use websites with your head and voice</small></span>
+        <span id="home-hf-state" class="hf-home-state"></span>
+      </button>
+      <p id="hf-home-error" class="helper-tip" role="status" hidden></p>
+      <p id="smh-hint" class="helper-tip" role="status" hidden></p>
+      <section id="explain-tip" class="card helper-tip" hidden>
+        <p data-i18n="exTip">Select hard text on any page. Then press "Explain simply", or right-click it.</p>
+        <p id="explain-tip-status" class="disclaimer" hidden></p>
+        <button id="explain-turn-on" class="small-button" data-i18n="exTurnOn" hidden>Turn on</button>
+      </section>
+
+      <section id="summary" class="card summary" hidden>
+        <h2 class="summary-title" data-i18n="sumTitle">Summary of this page</h2>
+        <p id="summary-status" class="summary-status" role="status"></p>
+        <ul id="summary-list" class="summary-list"></ul>
+        <button id="summary-read" class="small-button" data-i18n="readAloudRead" hidden>Read aloud</button>
+        <p class="disclaimer" data-i18n="sumNote">Made by Chrome on this device. Summaries can miss things.</p>
+      </section>
+
+      <!-- Reading goals: today's progress (only when the user turned Reading goals on) -->
+      <div id="goal-card" class="card goal-card" hidden>
+        <span id="goal-today" class="label"></span>
+        <span class="goal-bar" aria-hidden="true"><span id="goal-fill" class="goal-fill"></span></span>
+        <span id="goal-week" class="profile-desc"></span>
+      </div>
+
+      <!-- Basics and My tools as tiles. One tap = the next level (Azkhar-style).
+           Every tile is a button: screen readers hear its name, value and level. -->
+      <div class="tiles-head"><span class="group-label" data-i18n="groupBasics">Basics</span></div>
+      <div id="basic-tiles" class="tile-grid"></div>
+      <div id="my-tools-head" class="tiles-head">
+        <span class="group-label" data-i18n="myTools">My tools</span>
+        <button id="tools-change" class="link-button" data-i18n="toolsChange">Change</button>
+      </div>
+      <div id="quick-tools" class="tile-grid"></div>
+
+      <!-- Pick the 3 tools on Home. "Pick for me" = chosen from the user's profiles. -->
+      <section id="tools-picker" class="card pin-card" hidden>
+        <h2 class="pin-title" data-i18n="toolsPickTitle">Choose up to 3 tools for Home</h2>
+        <div id="tools-picker-list" class="picker-list"></div>
+        <div class="pin-buttons">
+          <button id="tools-save" class="primary-button" data-i18n="toolsSave">Save</button>
+          <button id="tools-auto" class="small-button" data-i18n="toolsAuto">Pick for me</button>
+          <button id="tools-cancel" class="small-button" data-i18n="lockCancel">Cancel</button>
+        </div>
+      </section>
+
+      <!-- Start again: easy to find, so nobody gets lost. Hidden while settings are locked with a PIN. -->
+      <div id="home-again" class="home-again">
+        <button id="home-reset" class="small-button" type="button" aria-expanded="false" aria-controls="home-reset-ask" data-i18n="homeReset">Reset to default</button>
+        <button id="home-quiz" class="small-button" type="button" data-i18n="homeQuiz">Redo the quiz</button>
+      </div>
+      <section id="home-reset-ask" class="card helper-tip" hidden>
+        <p data-i18n="homeResetNote">This undoes your own changes. Your profiles stay.</p>
+        <div class="pin-buttons">
+          <button id="home-reset-yes" class="primary-button" type="button" data-i18n="homeResetYes">Yes, reset</button>
+          <button id="home-reset-no" class="small-button" type="button" data-i18n="lockCancel">Cancel</button>
+        </div>
+      </section>
+      <p id="home-reset-note" class="helper-tip" role="status" hidden></p>
+
+      <div class="broken">
+        <span data-i18n="brokenHint">Page looks broken?</span>
+        <button id="home-site-off" class="link-button"></button>
+      </div>
+    </section>
+
+    <!-- Asks for the PIN when settings are locked (My Settings and This Site) -->
+    <section id="pin-ask" class="card pin-card" hidden>
+      <h2 class="pin-title" data-i18n="lockedTitle">Settings are locked</h2>
+      <p class="pin-text" data-i18n="lockedText">Type the 4-digit PIN to change settings.</p>
+      <label class="pin-label"><span data-i18n="lockPin">PIN</span>
+        <input id="pin-input" class="pin-input" type="password" inputmode="numeric" maxlength="4" autocomplete="off">
+      </label>
+      <p id="pin-error" class="pin-error" role="alert" hidden></p>
+      <div class="pin-buttons">
+        <button id="pin-unlock" class="primary-button" data-i18n="lockUnlock">Unlock</button>
+        <button id="pin-cancel" class="small-button" data-i18n="lockCancel">Cancel</button>
+      </div>
+      <p class="disclaimer" data-i18n="lockForgot">Forgot the PIN? Ask the person who set up Ease for you.</p>
+    </section>
+
+    <!-- TAB 2: My Settings. A short list of 5 groups. Tap a group to open its page. -->
+    <section id="tab-settings" class="tab-panel" hidden>
+      <div id="set-main" class="set-main">
+        <label id="search-box" class="search">
+          <span class="sr-only" data-i18n="searchLabel">Find a setting</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+          <input id="search" type="search" autocomplete="off">
+        </label>
+        <div id="search-results" class="card tool-list" hidden></div>
+
+        <!-- My profiles: the profiles that are on, and two ways in -->
+        <div class="card prof-card">
+          <div class="prof-head">
+            <h2 class="prof-title" data-i18n="groupProfiles">My profiles</h2>
+            <button id="see-for-me" class="link-button" type="button"></button>
+          </div>
+          <ul id="prof-chips" class="prof-chips"></ul>
+          <p id="prof-none" class="profile-desc" data-i18n="profNone" hidden>No profile yet.</p>
+          <button id="prof-change" class="prof-change" type="button" data-i18n="profChange">Change profiles</button>
+        </div>
+
+        <ul id="cats" class="cats"></ul>
+      </div>
+
+      <!-- One page for each group. Only one shows at a time. -->
+      <div id="set-page" class="set-page" hidden>
+        <div class="page-head">
+          <button id="page-back" class="page-back" type="button" data-i18n-label="pageBack">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+          </button>
+          <h2 id="page-title" class="page-title" tabindex="-1"></h2>
+        </div>
+
+        <div id="page-forme" class="set-pg" hidden>
+          <div id="whats-on" class="whats-on"></div>
+        </div>
+
+        <div id="page-profiles" class="set-pg" hidden>
+          <div id="profiles" class="card tool-list"></div>
+        </div>
+
+        <div id="page-reading" class="set-pg" hidden>
+          <div id="tools-reading" class="set-pg-tools"></div>
+          <h3 class="group-title" data-i18n="groupTranslate">Translation</h3>
+          <!-- Translation: one clear switch, a disclaimer, and a way to bring the offer back -->
+          <div class="card tool-list">
+            <div class="tool-row">
+              <label class="profile-text" for="tr-switch">
+                <span id="tr-title" class="label"></span>
+                <span id="tr-site-note" class="profile-desc" hidden></span>
+              </label>
+              <button id="tr-switch" class="switch-button" aria-pressed="false">
+                <span class="switch" aria-hidden="true"><span class="knob"></span></span>
+              </button>
+            </div>
+            <div class="tool-row">
+              <label class="label" for="tr-to" data-i18n="trInto">Translate websites into</label>
+              <select id="tr-to" class="tool-select"></select>
+            </div>
+            <p id="tr-status" class="tr-status" role="status" hidden></p>
+            <p class="disclaimer" data-i18n="trDisclaimer">Chrome translates on this device. Translations can have mistakes.</p>
+            <button id="tr-now" class="small-button tr-now" data-i18n="trNow">Translate this page now</button>
+          </div>
+
+        </div>
+
+        <div id="page-calm" class="set-pg" hidden>
+          <div id="tools-calm" class="set-pg-tools"></div>
+        </div>
+
+        <div id="page-hands" class="set-pg" hidden>
+          <div id="tools-hands" class="set-pg-tools"></div>
+        </div>
+
+        <div id="page-safety" class="set-pg" hidden>
+          <div id="tools-safety" class="set-pg-tools"></div>
+        </div>
+
+        <div id="page-care" class="set-pg" hidden>
+          <h3 class="group-title" data-i18n="groupCaregiver">Caregivers and other computers</h3>
+          <div class="card tool-list">
+            <div class="tool-row">
+              <label class="profile-text" for="sync-switch">
+                <span class="label" data-i18n="syncTitle">Same settings on all my computers</span>
+                <span class="profile-desc" data-i18n="syncNote">Uses Chrome Sync.</span>
+              </label>
+              <button id="sync-switch" class="switch-button" aria-pressed="false">
+                <span class="switch" aria-hidden="true"><span class="knob"></span></span>
+              </button>
+            </div>
+            <p id="sync-status" class="disclaimer" role="status" hidden></p>
+            <div id="sync-ask" class="sync-ask" hidden>
+              <p data-i18n="syncAsk">Ease found settings from your other computer. Which ones do you want to use?</p>
+              <div class="pin-buttons">
+                <button id="sync-use-other" class="primary-button" data-i18n="syncUseOther">Use those</button>
+                <button id="sync-keep" class="small-button" data-i18n="syncKeepThese">Keep these</button>
+              </div>
+            </div>
+          </div>
+
+          <button id="lock-open" class="wide-button"></button>
+          <section id="lock-set" class="card pin-card" hidden>
+            <h3 class="pin-title" data-i18n="lockSetTitle">Choose a 4-digit PIN</h3>
+            <label class="pin-label"><span data-i18n="lockPin">PIN</span>
+              <input id="pin-new" class="pin-input" type="password" inputmode="numeric" maxlength="4" autocomplete="off">
+            </label>
+            <label class="pin-label"><span data-i18n="lockPinAgain">Type it again</span>
+              <input id="pin-new2" class="pin-input" type="password" inputmode="numeric" maxlength="4" autocomplete="off">
+            </label>
+            <p id="pin-set-error" class="pin-error" role="alert" hidden></p>
+            <p class="disclaimer" data-i18n="lockSetNote">Home still works without the PIN.</p>
+            <div class="pin-buttons">
+              <button id="pin-save" class="primary-button" data-i18n="lockSave">Lock settings</button>
+              <button id="pin-set-cancel" class="small-button" data-i18n="lockCancel">Cancel</button>
+            </div>
+          </section>
+
+          <button id="setup-other" class="wide-button" data-i18n="setupOther">Set up Ease for someone else</button>
+          <button id="backup" class="wide-button" data-i18n="bkOpen">Back up or move my settings</button>
+
+          <h3 class="group-title" data-i18n="subStartAgain">Start again</h3>
+          <button id="reset" class="wide-button" data-i18n="resetManual">Undo my manual changes</button>
+          <button id="redo-setup" class="wide-button" data-i18n="redoSetup">Redo setup</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: This Site. Settings for the current website only. -->
+    <section id="tab-site" class="tab-panel" hidden>
+      <div class="card tool-list">
+        <div class="tool-row">
+          <span class="site-text">
+            <span id="site-host" class="label"></span>
+            <span id="site-label" class="profile-desc"></span>
+          </span>
+          <button id="site-switch" class="switch-button" aria-pressed="true" data-i18n-label="siteSwitch">
+            <span class="switch" aria-hidden="true"><span class="knob"></span></span>
+          </button>
+        </div>
+      </div>
+
+      <h2 class="group-title" data-i18n="siteOnly">Only on this site</h2>
+      <div class="card tool-list">
+        <div class="tool-row">
+          <label class="label" for="site-tr-switch" data-i18n="siteTranslate">Translate this website</label>
+          <button id="site-tr-switch" class="switch-button" aria-pressed="false">
+            <span class="switch" aria-hidden="true"><span class="knob"></span></span>
+          </button>
+        </div>
+        <div class="tool-row">
+          <span class="label" data-i18n="siteTextSize">Text size here</span>
+          <span class="stepper">
+            <button id="site-smaller" class="step" data-i18n-label="smallerText">A−</button>
+            <span id="site-size-value" class="size-value">100%</span>
+            <button id="site-bigger" class="step" data-i18n-label="biggerText">A+</button>
+          </span>
+        </div>
+      </div>
+      <!-- My tools, for this website only -->
+      <h2 class="group-title" data-i18n="siteForMe">My tools on this site</h2>
+      <div id="site-for-me" class="whats-on"></div>
+
+      <p class="note" data-i18n="siteNote">Changes here affect only this website.</p>
+      <button id="site-reset" class="wide-button" data-i18n="siteReset">Use my normal settings here</button>
+    </section>
+  </main>
+
+  <!-- Tabs -->
+  <nav id="tabs" class="tabs">
+    <button class="tab" data-tab="home" aria-current="page">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path></svg>
+      <span data-i18n="tabHome">Home</span>
+    </button>
+    <button class="tab" data-tab="settings">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 6h10"></path><path d="M18 6h2"></path><circle cx="16" cy="6" r="2"></circle><path d="M4 12h2"></path><path d="M10 12h10"></path><circle cx="8" cy="12" r="2"></circle><path d="M4 18h10"></path><path d="M18 18h2"></path><circle cx="16" cy="18" r="2"></circle></svg>
+      <span data-i18n="tabSettings">My Settings</span>
+    </button>
+    <button class="tab" data-tab="site">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18"></path><path d="M12 3a14 14 0 0 0 0 18"></path></svg>
+      <span data-i18n="tabSite">This Site</span>
+    </button>
+  </nav>
+
+  <script src="../shared/defaults.js"></script>
+  <script src="../shared/profiles.js"></script>
+  <script src="../shared/storage.js"></script>
+  <script src="../shared/i18n.js"></script>
+  <script src="../shared/translator-setup.js"></script>
+  <script src="../shared/lock.js"></script>
+  <script src="../shared/time-rules.js"></script>
+  <script src="../shared/ai.js"></script>
+  <script src="summarize.js"></script>
+  <script src="sound-limit.js"></script>
+  <script src="tile-icons.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
