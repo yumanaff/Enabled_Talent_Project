@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hands-free</title>
+  <link rel="stylesheet" href="panel.css">
+</head>
+<body>
+  <main>
+    <header>
+      <span class="logo" aria-hidden="true">≈</span>
+      <h1 data-i18n="hfTitle">Hands-free</h1>
+    </header>
+    <p class="intro" data-i18n="hfIntro">Move the pointer with your head. Hold still on a button to click it. Or just say what you want.</p>
+
+    <section id="access" class="card warn" hidden>
+      <h2 data-i18n="hfNeedAccess">A helper needs to do this once</h2>
+      <p data-i18n="hfNeedAccessText">Chrome must allow the camera and the microphone for this extension.</p>
+      <button id="allow" class="primary" type="button" data-i18n="hfAllow">Allow camera and microphone</button>
+    </section>
+
+    <p id="tab-name" class="hint" role="status"></p>
+    <button id="start" class="primary big" type="button" aria-pressed="false" data-i18n="hfStart">Start hands-free</button>
+
+    <section class="camera" aria-labelledby="face-state">
+      <button id="picture-toggle" class="picture-toggle" type="button" aria-pressed="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle><path class="slash" d="M4 4l16 16"></path></svg>
+        <span></span>
+      </button>
+      <div class="view">
+        <video id="video" playsinline muted></video>
+        <canvas id="dots" aria-hidden="true"></canvas>
+        <p class="no-picture" data-i18n="hfPictureHidden">The camera is on. Your picture is hidden.</p>
+      </div>
+      <p id="face-state" class="state" role="status" data-i18n="hfOff">Hands-free is off.</p>
+      <button id="center" type="button" data-i18n="hfCenter">Center the pointer</button>
+      <p class="hint" data-i18n="hfEdgeTip">Look at the top or bottom edge of the page to scroll.</p>
+      <p class="hint" data-i18n="hfCenterHelp">Look at the middle of the screen, then press Center (or say "center").</p>
+    </section>
+
+    <section class="card" aria-labelledby="heard-title">
+      <h2 id="heard-title" data-i18n="hfHeardTitle">I heard</h2>
+      <p id="heard" class="heard" aria-live="polite">…</p>
+      <p id="voice-note" class="hint"></p>
+    </section>
+
+    <section class="card settings" aria-labelledby="set-title">
+      <h2 id="set-title" data-i18n="hfSettingsTitle">Settings</h2>
+      <label class="row"><span data-i18n="hfUseHead">Move the pointer with my head</span><input type="checkbox" id="use-head"></label>
+      <label class="row"><span data-i18n="hfUseVoice">Voice commands</span><input type="checkbox" id="use-voice"></label>
+      <label class="row"><span data-i18n="hfShowDock">Big buttons on the side</span><input type="checkbox" id="use-dock"></label>
+      <label class="row col"><span data-i18n="hfClickWay">How to click</span>
+        <select id="click-way">
+          <option value="dwell" data-i18n="option_dwell">Hold still</option>
+          <option value="mouth" data-i18n="option_mouth">Open my mouth</option>
+          <option value="brows" data-i18n="option_brows">Raise my eyebrows</option>
+        </select>
+      </label>
+      <label class="row col"><span data-i18n="hfHoldTime">Hold still for</span>
+        <select id="hold">
+          <option value="1" data-i18n="hold_1">1 second</option>
+          <option value="1.5" data-i18n="hold_1.5">1.5 seconds</option>
+          <option value="2" data-i18n="hold_2">2 seconds</option>
+          <option value="3" data-i18n="hold_3">3 seconds</option>
+        </select>
+      </label>
+      <label class="row col"><span data-i18n="hfSpeed">Pointer speed</span>
+        <select id="speed">
+          <option value="slow" data-i18n="option_slow">Slow</option>
+          <option value="normal" data-i18n="option_normal">Normal</option>
+          <option value="fast" data-i18n="option_fast">Fast</option>
+        </select>
+      </label>
+    </section>
+
+    <section class="card" aria-labelledby="say-title">
+      <h2 id="say-title" data-i18n="hfSayTitle">Things you can say</h2>
+      <ul class="say">
+        <li data-i18n="hfSayScroll">"Scroll down", "Scroll up", "Top"</li>
+        <li data-i18n="hfSayVideo">"Next video", "Pause", "Play", "Mute"</li>
+        <li data-i18n="hfSayTabs">"Open YouTube", "Next tab", "Close tab", "Tabs"</li>
+        <li data-i18n="hfSayWrite">"Write": say any words, then search the web or put them in a box</li>
+        <li data-i18n="hfSayClick">"Click Subscribe", "Open Shorts", "Like"</li>
+        <li data-i18n="hfSayNumbers">"Show numbers", then "Click 5"</li>
+        <li data-i18n="hfSaySearch">"Search cooking videos", "Type hello"</li>
+        <li data-i18n="hfSayRead">"Read this", "Bigger text", "Go back"</li>
+        <li data-i18n="hfSayRest">"Rest" to stop clicking. "Wake up" to start again.</li>
+      </ul>
+    </section>
+
+    <section class="card safe">
+      <h2 data-i18n="hfSafeTitle">Safe by design</h2>
+      <p data-i18n="hfSafeMoney">Buying is turned off in hands-free mode. Pay, checkout and card fields never work here.</p>
+      <p data-i18n="hfSafeAsk">Send, delete, post and sign in ask YES or NO first.</p>
+      <p data-i18n="hfCameraPrivate">The camera picture stays on this computer. It is never saved or sent.</p>
+    </section>
+  </main>
+  <script src="../shared/defaults.js"></script>
+  <script src="../shared/profiles.js"></script>
+  <script src="../shared/storage.js"></script>
+  <script src="../shared/i18n.js"></script>
+  <script type="module" src="panel.js"></script>
+</body>
+</html>
