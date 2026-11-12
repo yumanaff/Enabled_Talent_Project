@@ -1,0 +1,18 @@
+# System files
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+
+# Node (if we add tools later)
+node_modules/
+
+# Packaged builds
+*.zip
+*.crx
+*.pem
+
+# The website offers the extension as a download
+!site/downloads/*.zip
