@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Daily Example (demo website)</title>
+<!-- A made-up, noisy news website. The real extension code runs on it (see load.js). -->
+<style>
+  /* Sizes in rem, like most modern websites (so Text size can change them). */
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 0.8125rem/1.45 Arial, Helvetica, sans-serif; color: #444; background: #fff; }
+  a { color: #3a66c4; text-decoration: none; }
+  header { display: flex; align-items: center; gap: 10px; padding: 8px 16px; border-bottom: 3px solid #c00; }
+  .logo { font: 900 1.375rem/1 Georgia, serif; color: #111; margin-right: auto; letter-spacing: -0.5px; }
+  .icon { width: 26px; height: 26px; border: none; border-radius: 4px; background: #eee; font-size: 0.8125rem; cursor: pointer; }
+  .ticker { overflow: hidden; white-space: nowrap; background: #111; color: #ffd400; font-weight: 700; font-size: 0.75rem; padding: 0.3125rem 0; }
+  .ticker span { display: inline-block; padding-left: 100%; animation: tick 14s linear infinite; }
+  @keyframes tick { to { transform: translateX(-100%); } }
+  main { display: grid; grid-template-columns: 1fr 210px; gap: 18px; padding: 14px 16px 120px; max-width: 980px; }
+  h1 { font: 700 1.3125rem/1.2 Georgia, serif; color: #111; margin: 4px 0 6px; }
+  h2 { font: 700 0.9375rem/1.3 Georgia, serif; color: #222; margin: 16px 0 4px; }
+  .meta { color: #999; font-size: 0.6875rem; }
+  .grey { color: #9a9a9a; font-size: 0.75rem; }
+  .player { position: relative; height: 190px; border-radius: 6px; margin: 10px 0; overflow: hidden;
+    background: linear-gradient(120deg, #1d2b64, #f857a6, #ffb347, #1d2b64); background-size: 300% 300%; animation: glow 6s ease infinite; }
+  @keyframes glow { 50% { background-position: 100% 50%; } }
+  .player .live { position: absolute; left: 10px; top: 8px; color: #fff; font-weight: 700; font-size: 0.6875rem; background: #e00; padding: 2px 6px; border-radius: 3px; animation: blink 0.8s steps(2) infinite; }
+  .bar { position: absolute; left: 8px; right: 8px; bottom: 8px; display: flex; gap: 6px; }
+  .bar button { height: 26px; min-width: 30px; border: none; border-radius: 4px; background: rgba(0,0,0,.55); color: #fff; font-size: 0.75rem; cursor: pointer; }
+  .menu { position: absolute; right: 10px; bottom: 40px; background: #fff; border: 1px solid #999; padding: 4px; display: none; font-size: 0.75rem; }
+  .menu.open { display: block; }
+  .menu [role="menuitem"] { padding: 4px 10px; cursor: pointer; }
+  .cc { position: absolute; left: 0; right: 0; bottom: 42px; text-align: center; color: #fff; font-weight: 700; text-shadow: 0 0.0625rem 0.1875rem #000; display: none; }
+  .ad { border-radius: 8px; padding: 12px; color: #fff; background: linear-gradient(160deg, #7a3cf0, #ff6ad5); animation: blink 1s steps(2) infinite; margin-bottom: 12px; }
+  .ad b { font-size: 1.75rem; display: block; line-height: 1; }
+  @keyframes blink { 50% { filter: brightness(1.35) saturate(1.4); } }
+  .ad .timer { font-family: monospace; font-size: 0.9375rem; }
+  .shop { display: inline-block; margin-top: 8px; background: #fff; color: #7a3cf0; font-weight: 700; padding: 0.1875rem 0.625rem; border-radius: 10px; font-size: 0.6875rem; }
+  .small-links a { display: inline-block; font-size: 0.625rem; margin: 0 0.25rem 0 0; }
+  .comment { margin-top: 14px; }
+  .comment textarea { width: 100%; height: 50px; font: inherit; }
+  .comment button { font-size: 0.625rem; padding: 0.0625rem 0.375rem; }
+  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 50; }
+  .modal { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 320px; background: #fff; border-radius: 10px; padding: 18px; z-index: 51; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,.4); }
+  .modal h3 { margin: 0 0 6px; font: 700 1.25rem Georgia, serif; color: #111; }
+  .modal input { width: 100%; padding: 6px; margin: 8px 0; }
+  .modal .go { background: #c00; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 700; }
+  .modal .x { position: absolute; right: 8px; top: 4px; border: none; background: none; font-size: 1rem; color: #aaa; }
+  .cookies { position: fixed; left: 0; right: 0; bottom: 0; background: #222; color: #eee; padding: 10px 16px; display: flex; gap: 10px; align-items: center; z-index: 40; font-size: 0.75rem; }
+  .cookies button { background: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-weight: 700; }
+  img.photo { width: 100%; height: 90px; object-fit: cover; border-radius: 6px; display: block; background: #ddd; }
+  @media (max-width: 640px) {
+    main { grid-template-columns: 1fr; }
+    header { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <span class="logo">The Daily Example</span>
+  <button class="icon" aria-label="Search">🔍</button>
+  <button class="icon" aria-label="Menu">☰</button>
+  <button class="icon" aria-label="My account">👤</button>
+</header>
+<div class="ticker"><span>BREAKING ▸ Markets jump ▸ Storm warning tonight ▸ Benefit rules change in 2027 ▸ Click here for more ▸</span></div>
+<main>
+  <article>
+    <p class="meta">Money · 6 min read · Updated 2 minutes ago</p>
+    <h1 id="headline">Benefit changes for 2027: what families need to know</h1>
+    <div class="player" id="player">
+      <span class="live">● LIVE · AUTOPLAY</span>
+      <div class="cc" id="cc">[Captions on] The new rules start in January.</div>
+      <div class="bar">
+        <button aria-label="Play (k)">▶</button>
+        <button aria-label="Mute (m)">🔊</button>
+        <span style="flex:1"></span>
+        <button aria-label="Subtitles/closed captions (c)" onclick="document.getElementById('cc').style.display='block'">CC</button>
+        <button aria-label="Settings" onclick="document.getElementById('m1').classList.toggle('open')">⚙</button>
+        <button aria-label="Full screen (f)">⛶</button>
+      </div>
+      <div class="menu" id="m1" role="menu">
+        <div role="menuitem" tabindex="0" onclick="document.getElementById('cc').style.display='block';this.parentNode.classList.remove('open')">Subtitles/CC</div>
+        <div role="menuitem" tabindex="0">Quality</div>
+        <div role="menuitem" tabindex="0">Playback speed</div>
+      </div>
+    </div>
+    <p class="grey" id="hard">Eligibility is determined based on adjusted net family income as reported on the income tax and benefit returns of both spouses or common-law partners for the base taxation year. Failure to file returns by the applicable deadline of April 30 may result in the suspension of benefit entitlements.</p>
+    <p class="grey">Families who received payments last year will be reassessed automatically. Recipients are advised to verify that direct deposit information remains current, as outdated banking details may delay disbursement.</p>
+    <h2>How to keep your payments</h2>
+    <p class="grey">Read the <a href="#guide">full guide</a> or update your details. Beware of messages that ask you to <a href="https://paypa1-secure-login.com/benefits">log in to PayPal to unlock your payment</a>.</p>
+    <img class="photo" alt="A family doing their taxes at a kitchen table" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='90'%3E%3Crect width='600' height='90' fill='%23c9d6e8'/%3E%3Ccircle cx='80' cy='60' r='24' fill='%23f0b27a'/%3E%3Ccircle cx='150' cy='55' r='20' fill='%23e59866'/%3E%3Crect x='220' y='40' width='300' height='36' rx='6' fill='%238aa3c4'/%3E%3C/svg%3E">
+    <p class="small-links"><a href="#a">Share</a><a href="#b">Print</a><a href="#c">Save</a><a href="#d">Report</a><a href="#e">Comments (128)</a></p>
+    <form class="comment" onsubmit="return false">
+      <label for="c1" class="grey">Leave a comment</label>
+      <textarea id="c1" name="comment"></textarea>
+      <button type="button">Post</button>
+    </form>
+  </article>
+  <aside>
+    <div class="ad" id="ad">
+      <b>50% OFF</b>⚡ FLASH SALE ⚡
+      <div>Only 2 left in stock!</div>
+      <div>Offer ends in <span class="timer" id="timer">04:59</span></div>
+      <a class="shop" href="#shop" onclick="event.preventDefault()">SHOP NOW</a>
+    </div>
+    <p class="grey">12 people are viewing this deal</p>
+    <h2>Most read</h2>
+    <p class="grey"><a href="#1">Storm warning tonight</a><br><a href="#2">Markets jump</a><br><a href="#3">New bus routes</a></p>
+  </aside>
+</main>
+
+<div class="cookies" id="cookies">🍪 We use cookies to improve your experience and for marketing. <button>ACCEPT ALL</button></div>
+
+<script>
+  // A countdown that "resets" (a common fake-urgency trick).
+  let left = 299;
+  setInterval(() => {
+    left = left > 0 ? left - 1 : 299;
+    const t = document.getElementById("timer");
+    if (t) t.textContent = String(Math.floor(left / 60)).padStart(2, "0") + ":" + String(left % 60).padStart(2, "0");
+  }, 1000);
+  // A newsletter pop-up the user did not ask for.
+  setTimeout(() => {
+    const bg = document.createElement("div"); bg.className = "modal-bg";
+    const m = document.createElement("div"); m.className = "modal";
+    m.innerHTML = '<button class="x" aria-label="Close">✕</button><h3>Wait! Don\'t miss out!</h3><p>Subscribe to our newsletter for daily deals.</p><input type="email" aria-label="Email" placeholder="Your email"><button class="go">SUBSCRIBE</button>';
+    m.querySelector(".x").onclick = () => { m.remove(); bg.remove(); };
+    document.body.append(bg, m);
+  }, 1200);
+</script>
+<script src="ext/files.js"></script>
+<script src="ext/locales.js"></script>
+<script src="shim.js"></script>
+<script src="load.js"></script>
+<script src="tour.js"></script>
+</body>
+</html>
