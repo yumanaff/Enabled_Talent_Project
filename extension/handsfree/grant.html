@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Allow camera and microphone</title>
+  <link rel="stylesheet" href="panel.css">
+</head>
+<body class="grant">
+  <main>
+    <header><span class="logo" aria-hidden="true">≈</span><h1 data-i18n="hfGrantTitle">Allow camera and microphone</h1></header>
+    <p data-i18n="hfGrantText">Hands-free uses the camera to follow the head, and the microphone to hear commands. Press the button, then choose Allow in Chrome's question.</p>
+    <p data-i18n="hfCameraPrivate">The camera picture stays on this computer. It is never saved or sent.</p>
+    <button id="grant" class="primary big" type="button" data-i18n="hfAllow">Allow camera and microphone</button>
+    <p id="result" class="state" role="status"></p>
+  </main>
+  <script src="../shared/defaults.js"></script>
+  <script src="../shared/profiles.js"></script>
+  <script src="../shared/storage.js"></script>
+  <script src="../shared/i18n.js"></script>
+  <script src="grant.js"></script>
+</body>
+</html>
